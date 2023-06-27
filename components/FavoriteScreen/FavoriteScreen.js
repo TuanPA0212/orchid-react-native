@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, TouchableHighlight } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableHighlight,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const FavoriteScreen = () => {
   const [favorites, setFavorites] = useState([]);
+  const navigation = useNavigation();
   const handleDelete = async (id) => {
     try {
       // Lấy danh sách yêu thích từ AsyncStorage
@@ -43,7 +52,6 @@ const FavoriteScreen = () => {
           if (favoritesData) {
             setFavorites(JSON.parse(favoritesData));
           }
-          console.log('useFocusEffect has been called');
         } catch (error) {
           console.log(error);
         }
@@ -52,19 +60,46 @@ const FavoriteScreen = () => {
     }, [])
   );
 
-  // const handleDelete = async () => {
-  //   try {
-  //     // Xóa toàn bộ dữ liệu trong AsyncStorage
-  //     await AsyncStorage.clear();
-  //     // Cập nhật danh sách yêu thích thành một mảng rỗng
-  //     setFavorites([]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleDeleteAll = async () => {
+    Alert.alert(
+      'Confirmation',
+      'Do you want to delete all from favorites?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            try {
+              // Xóa toàn bộ dữ liệu trong AsyncStorage
+              await AsyncStorage.clear();
+              // Cập nhật danh sách yêu thích thành một mảng rỗng
+              setFavorites([]);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          style: 'destructive',
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() =>
+        navigation.navigate('Detail', {
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          img: item.img,
+        })
+      }
+    >
       <TouchableHighlight
         style={styles.iconContainer}
         underlayColor="transparent"
@@ -77,8 +112,26 @@ const FavoriteScreen = () => {
         <Text style={styles.text}>{item.name}</Text>
         <Text numberOfLines={3}>{item.description}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
+
+  const DeleteButton = () => {
+    if (favorites.length > 0) {
+      return (
+        <View style={styles.iconDeleteContainer}>
+          <TouchableHighlight
+            underlayColor="transparent"
+            style={styles.iconDeleteAll}
+            onPress={handleDeleteAll}
+          >
+            <Ionicons name="close-outline" size={30} color="grey" />
+          </TouchableHighlight>
+        </View>
+      );
+    } else {
+      <View></View>;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -87,6 +140,7 @@ const FavoriteScreen = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
+      <DeleteButton />
     </View>
   );
 };

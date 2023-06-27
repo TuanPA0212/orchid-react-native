@@ -12,40 +12,65 @@ const Stack = createNativeStackNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Home" component={HomeScreen} />
-    <Stack.Screen name="Detail" component={DetailScreen} />
+    <Stack.Screen
+      name="HomeStack"
+      component={HomeTab}
+      options={{
+        headerTitleAlign: 'center',
+        title: 'Home',
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name="Detail"
+      component={DetailScreen}
+      options={{ headerTitleAlign: 'center' }}
+    />
   </Stack.Navigator>
 );
 
-export default function App() {
-  const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
+const HomeTab = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = 'home';
+          } else if (route.name === 'Favorite') {
+            iconName = 'bookmark';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitleAlign: 'center',
+          title: 'Home',
+        }}
+      />
+      <Tab.Screen
+        name="Favorite"
+        component={FavoriteScreen}
+        options={{ headerTitleAlign: 'center' }}
+      />
+    </Tab.Navigator>
+  );
+};
+
+export default function App() {
   return (
     <>
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ color, size }) => {
-              let iconName;
-
-              if (route.name === 'Home') {
-                iconName = 'home';
-              } else if (route.name === 'Favorite') {
-                iconName = 'bookmark';
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: 'green',
-            tabBarInactiveTintColor: 'gray',
-          })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeStack}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen name="Favorite" component={FavoriteScreen} />
-        </Tab.Navigator>
+        <HomeStack />
       </NavigationContainer>
     </>
   );

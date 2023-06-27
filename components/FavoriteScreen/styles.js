@@ -47,6 +47,20 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     padding: 5,
   },
+  iconDeleteContainer: {
+    alignItems: 'center',
+    // justifyContent: 'center',
+    marginTop: 10,
+  },
+  iconDeleteAll: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+  },
   textContainer: {
     flex: 1,
   },

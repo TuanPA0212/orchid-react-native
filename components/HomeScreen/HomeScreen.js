@@ -35,6 +35,27 @@ const menuOrchidToDisplay = [
     description:
       'Lan Chu đinh có tên khoa học là Spathoglottis plicata. Loài hoa này thuộc giống lan đất thường trồng thành bụi, thành khóm trong chậu hoặc trên mặt đất để trang trí cảnh quan, tạo thảm hoa trong vườn, công viên, tiểu cảnh, hàng hiên nhà.',
   },
+  {
+    id: 4,
+    name: 'Lan Cẩm cù',
+    img: require('../../img/lan_cam_cu.png'),
+    description:
+      'Lan Cẩm Cù có tên khoa học là Hoya carnosa. Trên thế giới hiện nay có hàng trăm loài hoa lan Cẩm Cù, hoa khi nở có dạng chùm tròn, hình ngôi sao 5 cánh nhỏ gồm nhiều màu sắc như đỏ, hồng, trắng. Khi nở hoa tỏa hương thơm dễ chịu và cũng khá lâu tàn.',
+  },
+  {
+    id: 5,
+    name: 'Lan Long tu Lào',
+    img: require('../../img/lan_long_tu.png'),
+    description:
+      'Long tu Lào là loại dễ chăm sóc và dễ ra hoa nhất và thường ra hoa đều hằng năm chứ ít khi nảy chồi. Hoa thường có hương thơm, đẹp, nở vào dịp tết nguyên đán nên rất được ưa chuộng. Có nhiều loại long tu, nhưng nên chọn những cây có thân dài mang nhiều sắc tím sẽ cho hoa màu tím đậm, hương thơm hơn loại thân trắng hoa cánh trắng họng vàng ít thơm.',
+  },
+  {
+    id: 6,
+    name: 'Lan Hạc vỹ',
+    img: require('../../img/lan_hac_vy.png'),
+    description:
+      'Lan có tên khoa học là Dendrobium aphyllum, là loài có hoa rất đẹp mọc thành từng chùm dài có hình dáng như những chú hạc đang bay trên bầu trời. Hoa có màu tím nhạt hoặc hồng nhạt dần về giữa thường có nụ vào cuối thu và nở vào mùa đông.',
+  },
 ];
 
 const Item = ({ id, name, description, img }) => {
@@ -54,6 +75,8 @@ const Item = ({ id, name, description, img }) => {
         const favoritesArray = JSON.parse(favorites);
         const exists = favoritesArray.some((item) => item.id === id);
         setIsFavorite(exists);
+      } else {
+        setIsFavorite(false);
       }
     } catch (error) {
       console.log(error);
